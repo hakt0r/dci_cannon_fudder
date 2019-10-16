@@ -20,3 +20,85 @@
 .App-link {
   color: #09d3ac;
 }
+
+#stage {
+  position: absolute;
+  z-index: -1;
+  top:0; left:0; bottom: 0; right: 0;
+}
+
+.Controls {
+  position: fixed;
+  left: 0;
+  top:0;
+  text-align: left;
+  padding: 2ch;
+  border-radius: 1ch;
+  background: #ffffff66;
+  margin: 1ch;
+}
+
+.Controls span {
+  display: block;
+}
+
+.WaitingPlayer,
+.Settings input, .Settings button,
+.Controls input, .Controls button,
+.Controls label {
+  padding: 0.5ch;
+  border-radius: 1ch;
+  background: #ffffff66;
+  text-align: center;
+  margin-top: 0.5ch;
+  margin-bottom: 0.5ch;
+}
+
+.Controls label {
+  font-weight: bold;
+}
+
+.Settings {
+  position: fixed;
+  right: 0;
+  text-align: right;
+}
+
+.Controls label,
+.Settings input,
+.Settings button {
+  display: block;
+
+}
+
+.Controls input {
+  width: 5ch;
+}
+
+.Controls button {
+  width: 3ch;
+  margin-left: 0.5ch;
+}
+.Controls #fire {
+  width: unset;
+  margin: unset;
+  margin-top: 0.5em;
+  background: red;
+  font-weight: bold;
+  color: white;
+  float: right;
+  padding-left: 2ch;
+  padding-right: 2ch;
+}
+
+.WaitingPlayers {
+  position: absolute;
+  bottom: 1ch;
+}
+
+.WaitingPlayer {
+  width: 10ch;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 1ch;
+}
