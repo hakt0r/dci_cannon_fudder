@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/dci_cannon_fudder/static/css/main.234871f4.chunk.css",
+    "main.js": "/dci_cannon_fudder/static/js/main.dc1bb218.chunk.js",
+    "main.js.map": "/dci_cannon_fudder/static/js/main.dc1bb218.chunk.js.map",
+    "runtime-main.js": "/dci_cannon_fudder/static/js/runtime-main.3b4f3a91.js",
+    "runtime-main.js.map": "/dci_cannon_fudder/static/js/runtime-main.3b4f3a91.js.map",
+    "static/js/2.9ad1135c.chunk.js": "/dci_cannon_fudder/static/js/2.9ad1135c.chunk.js",
+    "static/js/2.9ad1135c.chunk.js.map": "/dci_cannon_fudder/static/js/2.9ad1135c.chunk.js.map",
+    "index.html": "/dci_cannon_fudder/index.html",
+    "precache-manifest.f1d9fcb07982da0958cb302c66ad2335.js": "/dci_cannon_fudder/precache-manifest.f1d9fcb07982da0958cb302c66ad2335.js",
+    "service-worker.js": "/dci_cannon_fudder/service-worker.js",
+    "static/css/main.234871f4.chunk.css.map": "/dci_cannon_fudder/static/css/main.234871f4.chunk.css.map",
+    "static/media/logo.svg": "/dci_cannon_fudder/static/media/logo.25bf045c.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3b4f3a91.js",
+    "static/js/2.9ad1135c.chunk.js",
+    "static/css/main.234871f4.chunk.css",
+    "static/js/main.dc1bb218.chunk.js"
+  ]
+}
