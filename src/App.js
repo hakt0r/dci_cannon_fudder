@@ -1,36 +1,86 @@
 /*
+
   CannonFudderJS
 
   (c) 2019 Sebastian Glaser
   (c) 2019 DCI Digital Career Institute
 
-  ReactJS example to illustrate various aspects
-  of using react in the wild.
+    Source-Code licensed under
+                   GNU GPL 3.0 (https://www.gnu.org/licenses/gpl-3.0.en.html)
+               and GNU FDL 1.0 (https://www.gnu.org/licenses/fdl-1.3.en.html)
+
+    Artwork licensed under
+                   CC-NC-SA 3.0 (https://creativecommons.org/licenses/by-nc-sa/3.0/)
+
+  ReactJS example to illustrate various aspects of using react in the wild.
+
+  This is based on the videogame classic 'Artillery Simulator' in which players get cannon towers,
+  randomly placed on a 2d terrain. The objective is to hit each other, going in turns,
+  until only one player is left.
+
+    https://en.wikipedia.org/wiki/Artillery_game
+
+  TEACHERS NOTE: this is intended as the full solution to the task.
+    - Usually you would remove a component or function and give students the task to fill in.
+    - For more advanced students the whole application can be re-created just using the assets,
+      with the complete application as a reference on how it should behave.
+
+  Unusual for code, but in the sense of open education
+    this project is released under GNU FDL,
+    and GNU GPLv3.
+
 */
 
 import './App.css';
 import logo        from './logo.svg';
 import React       from 'react';
-import Controls    from './controls.js'
+
+/*
+  As with any good react application we structure our code
+  into reusable components. Our entry point needs to import them.
+*/
+
+import Controls    from './controls.js'    // the part responsible
 import AddPlayer   from './addPlayer.js'
 import Waiting     from './waitingList.js'
 import Battlefield from './battlefield.js'
+import ErrorBox    from './errorBox.js'
+
+/*
+  This function helps us get a random element from an Array.
+    NOTE: it is generally not recommended to extend the array prototype
+*/
 
 Array.prototype.random = function (){
   return this[Math.floor(Math.random()*this.length)];
 }
 
-const GRAV = 9.81;
-const RAD  = Math.PI / 180;
+/*
+  Some elementary constants
+    relevant for the simulation of the projectile's flight
+    and working with angles
+*/
+
+const GRAV = 9.81;          // approximation to the earth's gravity
+const RAD  = Math.PI / 180; // radian conversion ratio (degrees to radians, 360 degrees = TAU = 2 * PI)
+Math.TAU = 2 * Math.PI;     // This fundamental constant is missing from javascript :D
 
 class App extends React.Component {
 
   state = {
-    player:[],
-    currentPlayer:null
+    player:          [],   // this array is where we keep all the player's states
+    currentPlayer:   null, // a reference to the player whose turn it currently is
+    controlsBlocked: true, // blocks player input if a projectile is flying or setting are opened
+    showSettings:    true  // wther or not the Settings should be shown
   }
 
+  /*
+    This function creates a new player and inserts him into the list of players.
+    If there is no currentPlayer, this new player will be used as currentPlayer.
+  */
+
   addPlayer = (name)=> {
+    // create a new anonymous object representing the player with some default values
     let newPlayer = {
       name:name,
       health:100,
@@ -38,38 +88,65 @@ class App extends React.Component {
       angle:45,
       power:100
     };
-    Object.assign(newPlayer,this.getStartingPosition());
+    // in addition
+    Object.assign(
+      newPlayer,
+      this.getStartingPosition()
+    );
+    // now push the newly created player to the end of the players array
     this.state.player.push( newPlayer );
+    // using the boolean OR operator we check if a currentPlayer is already set
+    //   if not the new player will be set
+    //   this works because {this.state.currentPlayer} will evaluate to null
+    //   in wich case lazy evaluation will continue with the expression
+    //   and newPlayerwill be chosen.
     this.state.currentPlayer = this.state.currentPlayer || newPlayer;
+    // because we mutated the state directly (mainly because of the array)
+    // we need to force an update in order for react to render anew.
     this.forceUpdate()
   }
 
+  /*
+    The following functions modify the player objects
+  */
+
   turnLeft = ()=> {
+    if ( this.state.controlsBlocked ) return;
     if ( ! this.state.currentPlayer ) return;
     this.state.currentPlayer.angle -= 5;
     this.forceUpdate()
   }
 
   turnRight = ()=> {
+    if ( this.state.controlsBlocked ) return;
     if ( ! this.state.currentPlayer ) return;
     this.state.currentPlayer.angle += 5;
     this.forceUpdate()
   }
 
   lessPower = ()=> {
+    if ( this.state.controlsBlocked ) return;
     if ( ! this.state.currentPlayer ) return;
     this.state.currentPlayer.power -= 5;
     this.forceUpdate()
   }
 
   morePower = ()=> {
+    if ( this.state.controlsBlocked ) return;
     if ( ! this.state.currentPlayer ) return;
     this.state.currentPlayer.power += 5;
     this.forceUpdate()
   }
 
+  /*
+    This is the simulation part.
+    Because one can't tell (actually on could)
+  */
+
   fire = async ()=> {
+    if ( this.state.controlsBlocked ) return;
     if ( ! this.state.currentPlayer ) return;
+    this.setState({controlsBlocked:true});
     let time = 0;
     let player = this.state.currentPlayer;
     let angleCorrected = ( 360 + 360 - player.angle ) % 360;
@@ -86,11 +163,41 @@ class App extends React.Component {
         cannonball.y = startY + ( player.power * time * Math.sin( player.angle * RAD )) - ( GRAV * Math.pow(time,2) / 2);
         requestAnimationFrame(()=>{
           if ( this.paintStage(cannonball) ){
+            this.state.player.forEach( (player) => {
+              let distanceX = Math.abs( player.x - cannonball.x );
+              let distanceY = Math.abs( player.y - cannonball.y );
+              let distance  = Math.sqrt( distanceX**2 + distanceY**2 );
+              if ( distance < 20 ){
+                player.health = Math.floor( player.health - ( 20 - distance ));
+              }
+            });
             clearTimeout(timer);
             resolve();
           }
         });
       }, 16);
+    });
+    this.setState({controlsBlocked:false});
+    this.nextPlayer();
+  }
+
+  nextPlayer = () => {
+    let list = this.state.player;
+    let nextIdx = ( list.indexOf(this.state.currentPlayer) + 1 ) % list.length;
+    let player = list[nextIdx];
+    this.setState({currentPlayer:player});
+  }
+
+  flashError = async (msg) => {
+    this.setState({errorMessage:msg});
+    await new Promise( (resolve)=> { setTimeout(resolve,2000) });
+    this.setState({errorMessage:null});
+  }
+
+  startGame = () => {
+    this.setState({
+      showSettings:false,
+      controlsBlocked:false
     });
   }
 
@@ -102,10 +209,11 @@ class App extends React.Component {
     window.App = this;
     let current = this.state.currentPlayer;
     let others = this.state.player.filter( (player) => { return player !== current });
+    let playerNames = this.state.player.map( (player) => { return player.name } );
     return (
       <div className="App">
-        <div className="Header">
-        </div>
+        <div className="Header"></div>
+        { this.state.errorMessage ? <ErrorBox message={this.state.errorMessage} /> : null }
         <Controls
           player={current}
           turnLeft={this.turnLeft}
@@ -117,10 +225,13 @@ class App extends React.Component {
         <div className="WaitingPlayers">
           <Waiting list={others} />
         </div>
-        <div className="Settings">
-          <AddPlayer addPlayer={this.addPlayer}/>
-          <button>Restart Game</button>
-        </div>
+        { this.state.showSettings ?
+          <div className="Settings">
+            <img src={logo} className="App-logo" alt="logo" />
+            <AddPlayer addPlayer={this.addPlayer} list={playerNames} controller={this}/>
+            <button className="start center-relative-h" onClick={this.startGame}>Start Game</button>
+          </div>
+        : null }
         <Battlefield controller={this}/>
       </div>
     );

@@ -9,7 +9,15 @@ class AddPlayer extends React.Component {
     });
   }
 
-  add = ()=>{
+  add = async ()=>{
+    if ( this.state.name.trim() === "" ){
+      await this.props.controller.flashError("Please enter a user name");
+      return;
+    }
+    if ( this.props.list.includes(this.state.name) ){
+      await this.props.controller.flashError("Name is taken, choose another one");
+      return;
+    }
     this.props.addPlayer(this.state.name)
     this.setState({name:""});
   }
@@ -17,8 +25,8 @@ class AddPlayer extends React.Component {
   render(){
     return (
       <div className="AddPlayer">
-        <input id="name" onChange={this.update} />
-        <button onClick={this.add}>Add Player</button>
+        <input className="center-relative-h" id="name" onChange={this.update} value={this.state.name} />
+        <button className="center-relative-h" onClick={this.add}>Add Player</button>
       </div> );
   }
 }

@@ -1,6 +1,23 @@
 import React from 'react';
 
 class Controls extends React.Component {
+
+  handleKeyboardEvents = (event) => {
+    switch (event.key) {
+      case 'ArrowLeft':  this.props.turnLeft();  break;
+      case 'ArrowRight': this.props.turnRight(); break;
+      case 'ArrowUp':    this.props.morePower(); break;
+      case 'ArrowDown':  this.props.lessPower(); break;
+      case ' ':          this.props.fire();      break;
+      default:
+
+    }
+  }
+
+  componentDidMount = () => {
+    document.addEventListener('keydown', this.handleKeyboardEvents );
+  }
+
   render(){
     if ( ! this.props.player ) return null;
     return (
