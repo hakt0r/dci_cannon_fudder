@@ -195,6 +195,10 @@ class App extends React.Component {
   }
 
   startGame = () => {
+    if ( this.state.player.length < 2 ){
+      this.flashError("This will be boring. Add at least 2 players.");
+      return;
+    }
     this.setState({
       showSettings:false,
       controlsBlocked:false
