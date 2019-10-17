@@ -16,7 +16,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="logo.svg">
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="/home/awt/code/cannon-fudder/public/logo192.png"
+   inkscape:export-xdpi="50.169998"
+   inkscape:export-ydpi="50.169998">
   <defs
      id="defs2">
     <linearGradient
@@ -115,9 +118,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="258.64997"
-     inkscape:cy="112.46668"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="31.201576"
+     inkscape:cy="152.41808"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -126,9 +129,9 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1280"
-     inkscape:window-height="987"
-     inkscape:window-x="1366"
+     inkscape:window-width="1366"
+     inkscape:window-height="731"
+     inkscape:window-x="0"
      inkscape:window-y="18"
      inkscape:window-maximized="0" />
   <metadata
@@ -139,7 +142,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -149,7 +152,7 @@
      id="layer1"
      transform="translate(-50.350064,-102.41103)">
     <path
-       style="opacity:1;fill:#b3b3b3;fill-opacity:1;stroke:#e2e2e2;stroke-width:11.33858299;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#020202;stroke-width:11.33858299;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
        d="m 489.14062,392.73438 -91.89648,91.89648 a 139.40105,139.40105 0 0 0 -61.87305,-14.66992 139.40105,139.40105 0 0 0 -139.40234,139.40039 139.40105,139.40105 0 0 0 139.40234,139.40234 139.40105,139.40105 0 0 0 71.85157,-20.14258 48.487323,48.487323 0 0 0 39.26562,20.14258 48.487323,48.487323 0 0 0 48.48633,-48.48828 48.487323,48.487323 0 0 0 -28.44727,-44.09961 139.40105,139.40105 0 0 0 8.24414,-46.81445 139.40105,139.40105 0 0 0 -14.59375,-61.94922 l 91.82032,-91.82031 z"
        transform="scale(0.26458333)"
        id="path815"
