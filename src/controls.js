@@ -19,18 +19,17 @@ class Controls extends React.Component {
   }
 
   render(){
-    if ( ! this.props.player ) return null;
-    return (
+    return !this.props.player ? null : (
       <div className="Controls">
-        <label for="Name">Name</label><span className="Name">{this.props.player.name}</span>
-        <label for="Health">Health</label><span className="Health">{this.props.player.health}</span>
-        <label for="Angle">Angle</label>
+        <label htmlFor="Name">Name</label><span className="Name">{this.props.player.name}</span>
+        <label htmlFor="Health">Health</label><span className="Health">{this.props.player.health}</span>
+        <label htmlFor="Angle">Angle</label>
           <span className="Angle">
             <input type="number" className="Angle" value={this.props.player.angle}/>
             <button onClick={this.props.turnLeft}>&lt;</button>
             <button onClick={this.props.turnRight}>&gt;</button>
           </span>
-        <label for="Power">Power</label>
+        <label htmlFor="Power">Power</label>
         <span className="Power">
         <input type="number" className="Angle" value={this.props.player.power}/>
           <button onClick={this.props.lessPower}>-</button>

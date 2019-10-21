@@ -9,15 +9,13 @@ class AddPlayer extends React.Component {
     });
   }
 
-  add = async ()=>{
+  add = ()=> {
     if ( this.state.name.trim() === "" ){
-      await this.props.controller.flashError("Please enter a user name");
-      return;
-    }
-    if ( this.props.list.includes(this.state.name) ){
-      await this.props.controller.flashError("Name is taken, choose another one");
-      return;
-    }
+      this.props.controller.flashError("Please enter a user name");
+      return; }
+    if ( this.props.playerNames.includes(this.state.name) ){
+      this.props.controller.flashError("Name is taken, choose another one");
+      return; }
     this.props.addPlayer(this.state.name)
     this.setState({name:""});
   }
