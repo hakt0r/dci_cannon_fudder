@@ -72,7 +72,7 @@ class Battlefield extends React.Component {
       let rx = Math.round(cannonball.x);
       let ry = Math.round(cannonball.y);
       let px = this.cachedCtx.getImageData(rx,height-ry,1,1).data;
-      if ( px[0] == 0 && px[1] == 255 && px[2] == 0 && px[3] == 255 ){
+      if ( px[0] === 0 && px[1] === 255 && px[2] === 0 && px[3] === 255 ){
         return true;
       }
       if ( cannonball.x < 0 || cannonball.x > width || cannonball.y < 0 ){
