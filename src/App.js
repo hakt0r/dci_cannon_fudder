@@ -250,7 +250,11 @@ class App extends React.Component {
         { this.state.showSettings ?
           <div className="Settings">
             <img src={logo} className="App-logo" alt="logo" />
-            <AddPlayer addPlayer={this.addPlayer} playerNames={playerNames} controller={this}/>
+            <AddPlayer
+              addPlayer={this.addPlayer}
+              playerNames={playerNames}
+              flashError={this.flashError}
+            />
             <button className="start center-relative-h" onClick={this.startGame}>Start Game</button>
           </div>
         : null }
