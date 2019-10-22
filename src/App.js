@@ -63,10 +63,7 @@ Array.prototype.random = function (){
 
 /*
   Some elementary constants
-    r not mutate state directly. Use setState()                  react/no-direct-mutation-state
-  Line 123:5:  Do not mutate state directly. Use setState()                  react/no-direct-mutation-state
-  Line 130:5:  Do not mutate state directly. Use setState()                  react/no-direct-mutation-state
-  Line 137:5:  Do not mutate state directly. Use setState()   elevant for the simulation of the projectile's flight
+    relevant for the simulation of the projectile's flight
     and working with angles
 */
 
@@ -97,7 +94,7 @@ class App extends React.Component {
       angle:45,
       power:100
     };
-    // in addition
+    // in addition we need starting postions (we get them from battlefield.js)
     Object.assign(
       newPlayer,
       this.getStartingPosition()
