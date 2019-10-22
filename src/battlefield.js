@@ -26,10 +26,8 @@ class Battlefield extends React.Component {
     this.noise.lastPos = {x:0,y:0};
     this.noise.width = this.cnv.offsetWidth;
     this.map = this.noise.fill();
-    this.props.controller.paintStage = this.paintStage;
-    this.props.controller.getStartingPosition = () => {
-      return this.map.random()
-    }
+    this.props.registerStage(this.paintStage);
+    this.props.registerMap(this.map);
   }
 
   paintStage = (cannonball=false) => {
@@ -53,7 +51,7 @@ class Battlefield extends React.Component {
     c.fill();
     c.fillStyle = '#f00';
     c.strokeStyle = '#fff';
-    this.props.controller.state.player.forEach( (player) => {
+    this.props.players.forEach( (player) => {
       c.beginPath();
       c.arc( player.x, height - player.y, 10, 0, 2 * Math.PI );
       c.fill();

@@ -57,8 +57,8 @@ import ErrorBox    from './errorBox.js'
     NOTE: it is generally not recommended to extend the array prototype
 */
 
-Array.prototype.random = function (){
-  return this[Math.floor(Math.random()*this.length)];
+Array.random = function (array){
+  return array[Math.floor(Math.random()*array.length)];
 }
 
 /*
@@ -105,7 +105,7 @@ class App extends React.Component {
     //   if not the new player will be set
     //   this works because {this.state.currentPlayer} will evaluate to null
     //   in wich case lazy evaluation will continue with the expression
-    //   and newPlayerwill be chosen.
+    //   and newPlayer will be chosen.
     this.setState({
       currentPlayer: this.state.currentPlayer || newPlayer
     });
@@ -220,15 +220,32 @@ class App extends React.Component {
     });
   }
 
+
+
+
+  registerStage = (paintStage) => {
+    this.paintStage = paintStage;
+  }
+
+  registerMap = (map) => {
+    this.map = map;
+  }
+
+  getStartingPosition = () => {
+    return Array.random(this.map);
+  }
+
   componentDidUpdate = () => {
     this.paintStage(false)
   }
 
+
+
   render(){
-    window.App = this;
-    let current = this.state.currentPlayer;
-    let others = this.state.player.filter( (player) => { return player !== current });
-    let playerNames = this.state.player.map( (player) => { return player.name } );
+    window.App      = this;
+    let current     = this.state.currentPlayer;
+    let others      = this.state.player.filter( (player) => { return player !== current });
+    let playerNames = this.state.player.map(    (player) => { return player.name } );
     return (
       <div className="App">
         <div className="Header"></div>
@@ -246,16 +263,20 @@ class App extends React.Component {
         </div>
         { this.state.showSettings ?
           <div className="Settings">
-            <img src={logo} className="App-logo" alt="logo" />
+            <img src={logo} classNcontrollerame="App-logo" alt="logo" />
             <AddPlayer
-              addPlayer={this.addPlayer}
               playerNames={playerNames}
+              addPlayer={this.addPlayer}
               flashError={this.flashError}
             />
             <button className="start center-relative-h" onClick={this.startGame}>Start Game</button>
           </div>
         : null }
-        <Battlefield controller={this}/>
+        <Battlefield
+          players={this.state.player}
+          registerMap={this.registerMap}
+          registerStage={this.registerStage}
+        />
       </div>
     );
   }

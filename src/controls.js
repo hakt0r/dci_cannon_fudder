@@ -10,12 +10,15 @@ class Controls extends React.Component {
       case 'ArrowDown':  this.props.lessPower(); break;
       case ' ':          this.props.fire();      break;
       default:
-
     }
   }
 
   componentDidMount = () => {
     document.addEventListener('keydown', this.handleKeyboardEvents );
+  }
+
+  componentDidUnmount = () => {
+    document.removeEventListener('keydown', this.handleKeyboardEvents );
   }
 
   render(){

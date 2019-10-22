@@ -1,7 +1,7 @@
 import React from 'react';
 
 class AddPlayer extends React.Component {
-  state = {name:""};
+  state = { name: "" };
 
   update = (e) => {
     this.setState({
@@ -11,9 +11,8 @@ class AddPlayer extends React.Component {
 
   add = ()=> {
     if ( this.state.name.trim() === "" ){
-      this.props.flashError("Please enter a user name");
-      return; }
-    if ( this.props.playerNames.includes(this.state.name) ){
+      this.props.flashError("Please enter a user name"); }
+    else if ( this.props.playerNames.includes(this.state.name) ){
       this.props.flashError("Name is taken, choose another one");
       return; }
     this.props.addPlayer(this.state.name)
