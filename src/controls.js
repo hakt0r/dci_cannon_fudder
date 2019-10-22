@@ -17,7 +17,7 @@ class Controls extends React.Component {
     document.addEventListener('keydown', this.handleKeyboardEvents );
   }
 
-  componentDidUnmount = () => {
+  componentWillUnmount = () => {
     document.removeEventListener('keydown', this.handleKeyboardEvents );
   }
 

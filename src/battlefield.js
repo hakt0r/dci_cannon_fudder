@@ -4,8 +4,12 @@ import smoothNoise from './smoothNoise.js'
 const RAD = Math.PI / 180;
 
 class Battlefield extends React.Component {
-
   componentDidMount(){
+    this.props.registerBattlefield(this.paintStage,this.randomizeMap);
+    this.randomizeMap();
+  }
+
+  randomizeMap = () => {
     this.cnv = document.getElementById('stage');
     this.cnv.width = window.innerWidth;
     this.cnv.height = window.innerHeight;
@@ -26,7 +30,6 @@ class Battlefield extends React.Component {
     this.noise.lastPos = {x:0,y:0};
     this.noise.width = this.cnv.offsetWidth;
     this.map = this.noise.fill();
-    this.props.registerStage(this.paintStage);
     this.props.registerMap(this.map);
   }
 

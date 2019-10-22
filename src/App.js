@@ -51,6 +51,7 @@ import AddPlayer   from './addPlayer.js'
 import Waiting     from './waitingList.js'
 import Battlefield from './battlefield.js'
 import ErrorBox    from './errorBox.js'
+import Highscore   from './highscore.js'
 
 /*
   This function helps us get a random element from an Array.
@@ -77,7 +78,20 @@ class App extends React.Component {
     player:          [],   // this array is where we keep all the player's states
     currentPlayer:   null, // a reference to the player whose turn it currently is
     controlsBlocked: true, // blocks player input if a projectile is flying or setting are opened
-    showSettings:    true  // wther or not the Settings should be shown
+    showSettings:    true, // wether or not the Settings should be shown
+    highscore: [{
+      name:'Unknown Player',
+      score: 23
+    }]
+  }
+
+  addHighScore = (name,score) => {
+    let list = this.state.highscore;
+    list.push({name:name,score:score});
+    let sortedList = list
+      .sort((a,b)=> { return b.score - a.score; })
+      .slice(0,9);
+    this.setState({highscore:sortedList});
   }
 
   /*
@@ -149,6 +163,22 @@ class App extends React.Component {
     this.setState({currentPlayer:temp});
   }
 
+  startGame = () => {
+    if ( this.state.player.length < 2 ){
+      this.flashError("This will be boring. Add at least 2 players.");
+      return;
+    }
+    this.randomizeMap();
+    this.state.player.forEach( (player)=> {
+      player.health = 100;
+      Object.assign(player,this.getStartingPosition())
+    });
+    this.setState({
+      showSettings:false,
+      controlsBlocked:false
+    });
+  }
+
   /*
     This is the simulation part.
     Because one can't tell (actually on could)
@@ -178,14 +208,7 @@ class App extends React.Component {
         cannonball.y = startY + ( player.power * time * Math.sin( player.angle * RAD )) - ( GRAV * Math.pow(time,2) / 2);
         requestAnimationFrame( ()=>{
           if ( this.paintStage(cannonball) ){
-            this.state.player.forEach( (player) => {
-              let distanceX = Math.abs( player.x - cannonball.x );
-              let distanceY = Math.abs( player.y - cannonball.y );
-              let distance  = Math.sqrt( distanceX**2 + distanceY**2 );
-              if ( distance < 20 ){
-                player.health = Math.floor( player.health - ( 20 - distance ));
-              }
-            });
+            this.projectileHitSomething(cannonball);
             clearTimeout(timer);
             resolve();
           }
@@ -194,6 +217,29 @@ class App extends React.Component {
     });
     this.setState({controlsBlocked:false});
     this.nextPlayer();
+  }
+
+  projectileHitSomething = (cannonball)=> {
+    this.state.player.forEach( (player) => {
+      let distanceX = Math.abs( player.x - cannonball.x );
+      let distanceY = Math.abs( player.y - cannonball.y );
+      let distance  = Math.sqrt( distanceX**2 + distanceY**2 );
+      if ( distance < 20 ){
+        player.health = Math.max( 0, Math.floor( player.health - ( 20 - distance )));
+        this.playerWasHit();
+      }
+    });
+  }
+
+  playerWasHit = ()=> {
+    let survivors = this.state.player.filter( (player) => { return player.health > 0 } );
+    if ( survivors.length === 1 ){
+      this.addHighScore(survivors[0].name,survivors[0].health);
+      this.setState({
+        showSettings:true,
+        controlsBlocked:true
+      });
+    }
   }
 
   nextPlayer = () => {
@@ -209,22 +255,13 @@ class App extends React.Component {
     this.setState({errorMessage:null});
   }
 
-  startGame = () => {
-    if ( this.state.player.length < 2 ){
-      this.flashError("This will be boring. Add at least 2 players.");
-      return;
-    }
-    this.setState({
-      showSettings:false,
-      controlsBlocked:false
-    });
-  }
 
 
 
 
-  registerStage = (paintStage) => {
+  registerBattlefield = (paintStage,randomizeMap) => {
     this.paintStage = paintStage;
+    this.randomizeMap = randomizeMap;
   }
 
   registerMap = (map) => {
@@ -263,7 +300,8 @@ class App extends React.Component {
         </div>
         { this.state.showSettings ?
           <div className="Settings">
-            <img src={logo} classNcontrollerame="App-logo" alt="logo" />
+            <img src={logo} className="App-logo" alt="logo" />
+            <Highscore highscore={this.state.highscore}/>
             <AddPlayer
               playerNames={playerNames}
               addPlayer={this.addPlayer}
@@ -275,7 +313,7 @@ class App extends React.Component {
         <Battlefield
           players={this.state.player}
           registerMap={this.registerMap}
-          registerStage={this.registerStage}
+          registerBattlefield={this.registerBattlefield}
         />
       </div>
     );

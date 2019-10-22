@@ -9,6 +9,18 @@
 .App-logo {
   height: 40vmin;
 }
+.Highscore {
+  position: absolute;
+  top: 14ch;
+  left: 11ch;
+  right: 7ch;
+  background: #ffffffd6;
+  border-radius: 1ch;
+  text-align: center;
+}
+.Highscore * {
+  color: black;
+}
 
 .App-header {
   background-color: #282c34;
