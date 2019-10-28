@@ -99,11 +99,11 @@ class App extends React.Component {
     If there is no currentPlayer, this new player will be used as currentPlayer.
   */
 
-  addPlayer = (name)=> {
+  addPlayer = ({name,health})=> {
     // create a new anonymous object representing the player with some default values
     let newPlayer = {
       name:name,
-      health:100,
+      health:health,
       points:0,
       angle:45,
       power:100
@@ -306,6 +306,7 @@ class App extends React.Component {
               playerNames={playerNames}
               addPlayer={this.addPlayer}
               flashError={this.flashError}
+              startGame={this.startGame}
             />
             <button className="start center-relative-h" onClick={this.startGame}>Start Game</button>
           </div>
